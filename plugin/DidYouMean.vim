@@ -6,12 +6,18 @@
 function! s:didyoumean()
     let filename = expand("%:t")
     let path = expand("%:r")
-    " as of Vim 7.4, glob() has an optional parameter to split, but not
-    " everybody is using 7.4 yet
-    let matching_files = split(glob(expand("%")."*", 1), '\n')
-    if empty(matching_files)
-        return
-    endif
+
+    try
+      " as of Vim 7.4, glob() has an optional parameter to split, but not
+      " everybody is using 7.4 yet
+      let matching_files = split(glob(expand("%")."*", 1), '\n')
+      if empty(matching_files)
+          return
+      endif
+    catch
+      return
+    endtry
+
     let shown_items = ['Did you mean:']
     for i in range(1, len(matching_files))
         call add(shown_items, i.'. '.matching_files[i-1])
