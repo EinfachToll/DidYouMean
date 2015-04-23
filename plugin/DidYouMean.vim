@@ -1,21 +1,30 @@
 " Vim global plugin for selecting the file you actually want to open
-" Last Change: 2015-01-07
+" Last Change: 2015-04-22
 " Maintainer: Daniel Schemala <istjanichtzufassen@gmail.com>
 " License: MIT
 
-function! s:didyoumean()
-    let filename = expand("%:t")
-    let path = expand("%:r")
 
+function s:filter_out_swapfile(matched_files)
+    silent! redir => swapfile
+        silent swapname
+    redir END
+    let swapfile = fnamemodify(swapfile[1:], ':t')
+
+    return filter(a:matched_files, 'v:val != swapfile')
+endfunction
+
+
+function! s:didyoumean()
     try
-      " as of Vim 7.4, glob() has an optional parameter to split, but not
-      " everybody is using 7.4 yet
-      let matching_files = split(glob(expand("%")."*", 1), '\n')
-      if empty(matching_files)
-          return
-      endif
+        " as of Vim 7.4, glob() has an optional parameter to split, but not
+        " everybody is using 7.4 yet
+        let matching_files = split(glob(expand("%")."*", 1), '\n')
+        let matching_files = s:filter_out_swapfile(matching_files)
+        if empty(matching_files)
+            return
+        endif
     catch
-      return
+        return
     endtry
 
     let shown_items = ['Did you mean:']
