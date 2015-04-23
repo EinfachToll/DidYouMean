@@ -4,7 +4,7 @@
 " License: MIT
 
 
-function s:filter_out_swapfile(matched_files)
+function! s:filter_out_swapfile(matched_files)
     silent! redir => swapfile
         silent swapname
     redir END
