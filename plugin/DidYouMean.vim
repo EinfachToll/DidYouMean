@@ -15,6 +15,10 @@ endfunction
 
 
 function! s:didyoumean()
+    if filereadable(expand("%"))
+        " Another BufNewFile event might have handled this already.
+        return
+    endif
     try
         " as of Vim 7.4, glob() has an optional parameter to split, but not
         " everybody is using 7.4 yet
