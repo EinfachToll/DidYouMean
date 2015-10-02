@@ -20,9 +20,12 @@ function! s:didyoumean()
         return
     endif
     try
-        " as of Vim 7.4, glob() has an optional parameter to split, but not
+        " As of Vim 7.4, glob() has an optional parameter to split, but not
         " everybody is using 7.4 yet
-        let matching_files = split(glob(expand("%")."*", 1), '\n')
+        let matching_files = split(glob(expand("%")."*", 0), '\n')
+        if !len(matching_files)
+            let matching_files = split(glob(expand("%")."*", 1), '\n')
+        endif
         let matching_files = s:filter_out_swapfile(matching_files)
         if empty(matching_files)
             return
