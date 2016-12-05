@@ -41,7 +41,7 @@ function! s:didyoumean()
     let selected_number = inputlist(shown_items)
     if selected_number >= 1 && selected_number <= len(matching_files)
         let empty_buffer_nr = bufnr("%")
-        execute ":edit " . matching_files[selected_number-1]
+        execute ":edit " . fnameescape(matching_files[selected_number-1])
         execute ":silent bdelete " . empty_buffer_nr
         filetype detect  " without this line, the filetype is not set
     endif
