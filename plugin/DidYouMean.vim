@@ -34,11 +34,17 @@ function! s:didyoumean()
         return
     endtry
 
-    let shown_items = ['Did you mean:']
-    for i in range(1, len(matching_files))
-        call add(shown_items, i.'. '.matching_files[i-1])
-    endfor
-    let selected_number = inputlist(shown_items)
+    if len(matching_files) > 1
+        if len(matching_files) == 1
+            let selected_number = 1
+        else
+            let shown_items = ['Did you mean:']
+            for i in range(1, len(matching_files))
+                call add(shown_items, i.'. '.matching_files[i-1])
+            endfor
+        let selected_number = inputlist(shown_items)
+        endif
+    endif
     if selected_number >= 1 && selected_number <= len(matching_files)
         let empty_buffer_nr = bufnr("%")
         execute ":edit " . fnameescape(matching_files[selected_number-1])
