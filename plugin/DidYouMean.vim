@@ -19,6 +19,7 @@ function! s:didyoumean()
         " Another BufNewFile event might have handled this already.
         return
     endif
+
     try
         " As of Vim 7.4, glob() has an optional parameter to split, but not
         " everybody is using 7.4 yet
@@ -43,7 +44,13 @@ function! s:didyoumean()
         let empty_buffer_nr = bufnr("%")
         execute ":edit " . fnameescape(matching_files[selected_number-1])
         execute ":silent bdelete " . empty_buffer_nr
-        filetype detect  " without this line, the filetype is not set
+
+        " trigger some autocommands manually which are normally triggered when
+        " executing ':edit file', but apparently not here. Don't know why.
+        silent doautocmd BufReadPre
+        silent doautocmd BufRead
+        silent doautocmd BufReadPost
+        silent doautocmd TextChanged
     endif
 endfunction
 
