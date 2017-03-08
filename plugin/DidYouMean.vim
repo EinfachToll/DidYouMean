@@ -1,5 +1,4 @@
 " Vim global plugin for selecting the file you actually want to open
-" Last Change: 2015-04-22
 " Maintainer: Daniel Schemala <istjanichtzufassen@gmail.com>
 " License: MIT
 
@@ -8,9 +7,9 @@ function! s:filter_out_swapfile(matched_files)
     silent! redir => swapfile
         silent swapname
     redir END
-    let swapfile = fnamemodify(swapfile[1:], ':t')
+    let swapfile = fnamemodify(swapfile[1:], ':p')
 
-    return filter(a:matched_files, 'v:val != swapfile')
+    return filter(a:matched_files, 'fnamemodify(v:val, ":p") != swapfile')
 endfunction
 
 
