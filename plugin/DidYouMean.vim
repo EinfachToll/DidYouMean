@@ -34,6 +34,14 @@ function! s:didyoumean()
         return
     endtry
 
+    if exists("*fzf#run")
+        call fzf#run({
+                    \ 'source': matching_files,
+                    \ 'sink': 'e',
+                    \ 'options': '--reverse --header "Did you mean:"'
+                    \ })
+        return
+    endif
     let shown_items = ['Did you mean:']
     for i in range(1, len(matching_files))
         call add(shown_items, i.'. '.matching_files[i-1])
