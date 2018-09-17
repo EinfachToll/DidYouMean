@@ -38,7 +38,7 @@ function! s:didyoumean()
     for i in range(1, len(matching_files))
         call add(shown_items, i.'. '.matching_files[i-1])
     endfor
-    let selected_number = inputlist(shown_items)
+    unsilent let selected_number = inputlist(shown_items)
     if selected_number >= 1 && selected_number <= len(matching_files)
         let empty_buffer_nr = bufnr("%")
         execute ":edit " . fnameescape(matching_files[selected_number-1])
