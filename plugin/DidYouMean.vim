@@ -34,30 +34,30 @@ function! s:didyoumean()
         return
     endtry
 
-    if exists("*fzf#run")
+    if exists("g:dym_use_fzf") && g:dym_use_fzf != 0 && exists("*fzf#run")
         call fzf#run({
                     \ 'source': matching_files,
                     \ 'sink': 'e',
                     \ 'options': '--reverse --header "Did you mean:"'
                     \ })
-        return
-    endif
-    let shown_items = ['Did you mean:']
-    for i in range(1, len(matching_files))
-        call add(shown_items, i.'. '.matching_files[i-1])
-    endfor
-    unsilent let selected_number = inputlist(shown_items)
-    if selected_number >= 1 && selected_number <= len(matching_files)
-        let empty_buffer_nr = bufnr("%")
-        execute ":edit " . fnameescape(matching_files[selected_number-1])
-        execute ":silent bdelete " . empty_buffer_nr
+    else
+        let shown_items = ['Did you mean:']
+        for i in range(1, len(matching_files))
+            call add(shown_items, i.'. '.matching_files[i-1])
+        endfor
+        unsilent let selected_number = inputlist(shown_items)
+        if selected_number >= 1 && selected_number <= len(matching_files)
+            let empty_buffer_nr = bufnr("%")
+            execute ":edit " . fnameescape(matching_files[selected_number-1])
+            execute ":silent bdelete " . empty_buffer_nr
 
-        " trigger some autocommands manually which are normally triggered when
-        " executing ':edit file', but apparently not here. Don't know why.
-        silent doautocmd BufReadPre
-        silent doautocmd BufRead
-        silent doautocmd BufReadPost
-        silent doautocmd TextChanged
+            " trigger some autocommands manually which are normally triggered when
+            " executing ':edit file', but apparently not here. Don't know why.
+            silent doautocmd BufReadPre
+            silent doautocmd BufRead
+            silent doautocmd BufReadPost
+            silent doautocmd TextChanged
+        endif
     endif
 endfunction
 

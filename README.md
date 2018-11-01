@@ -3,8 +3,6 @@ DidYouMean
 
 Vim plugin which asks for the right file to open.
 
-Uses fzf to present/filter the list if the [fzf.vim](https://github.com/junegunn/fzf.vim) plugin is installed.
-
 Demo:
 
 [![asciicast](https://asciinema.org/a/15372.png)](https://asciinema.org/a/15372)
@@ -15,3 +13,11 @@ Installation
 ------------
 
 Just drop DidYouMean.vim into .vim/plugin/ or use a plugin manager like Pathogen or Vundle.
+
+Configuration
+-------------
+
+This plugin can use fzf to present/filter the list if
+    - it is enabled by `let g:dym_use_fzf = 1` in your .vimrc
+    - the [fzf.vim](https://github.com/junegunn/fzf.vim) plugin is installed.
+
