@@ -1,7 +1,9 @@
 DidYouMean
 ==========
 
-Vim plugin which asks for the right file to open
+Vim plugin which asks for the right file to open.
+
+Uses fzf to present/filter the list if the [fzf.vim](https://github.com/junegunn/fzf.vim) plugin is installed.
 
 Demo:
 
