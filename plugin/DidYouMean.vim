@@ -19,6 +19,11 @@ function! s:didyoumean()
         return
     endif
 
+    if expand("%") == "[Denite]"
+        " Ignore Denite buffers
+        return
+    endif
+
     try
         " As of Vim 7.4, glob() has an optional parameter to split, but not
         " everybody is using 7.4 yet
